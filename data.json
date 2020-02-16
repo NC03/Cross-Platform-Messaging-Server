@@ -1,0 +1,23 @@
+{
+    "users": [
+        {
+            "username": "john",
+            "saltedPassword": "ladskfjalskdjfa"
+        },
+        {
+            "username": "nick",
+            "saltedPassword": "ladskfjalskdjfa"
+        }
+    ],
+    "messages": [
+        {
+            "authUsers": [
+                "john",
+                "nick"
+            ],
+            "sender": "nick",
+            "content": "Hi John!"
+        }
+    ],
+    "conversations": []
+}
