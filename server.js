@@ -47,7 +47,6 @@ function handle(keyValues, jsonData) {
 				//Sent password must not be empty string
 				var present = false;
 				for (var j = 0; j < jsonData.users.length; j++) {
-					console.log(jsonData.users[j]);
 					if (jsonData.users[j].username == obj.username) {
 						present = true;
 					}
@@ -153,7 +152,6 @@ function handle(keyValues, jsonData) {
 				) {
 					flag = false;
 					if (obj.action == "request") {
-						console.log("REQUEST MESSAGE");
 						outputObj.data = [];
 						for (var j = 0; j < jsonData.messages.length; j++) {
 							if ("" + jsonData.messages[j].authConversation == groupId + "") {
