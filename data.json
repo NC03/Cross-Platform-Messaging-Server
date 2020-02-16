@@ -6,7 +6,7 @@
         },
         {
             "username": "nick",
-            "password": "ladskfjalskdjfa"
+            "password": "hmac"
         }
     ],
     "messages": [
@@ -14,6 +14,61 @@
             "authConversation": 13,
             "sender": "nick",
             "content": "Hi John!"
+        },
+        {
+            "authConversation": 13,
+            "sender": "nick",
+            "content": "Hi John!"
+        },
+        {
+            "authConversation": 13,
+            "sender": "nick",
+            "content": "Hi M!"
+        },
+        {
+            "authConversation": 13,
+            "sender": "nick",
+            "content": "Hi M!"
+        },
+        {
+            "authConversation": 13,
+            "sender": "nick",
+            "content": "Hi M!"
+        },
+        {
+            "authConversation": 13,
+            "sender": "nick",
+            "content": "Hi M!"
+        },
+        {
+            "authConversation": 13,
+            "sender": "nick",
+            "content": "Hi M!"
+        },
+        {
+            "authConversation": 13,
+            "sender": "nick",
+            "content": "Hi M!"
+        },
+        {
+            "authConversation": 13,
+            "sender": "nick",
+            "content": "Hi M!"
+        },
+        {
+            "authConversation": 13,
+            "sender": "nick",
+            "content": "Hi M!"
+        },
+        {
+            "authConversation": 13,
+            "sender": "nick",
+            "content": "Hi M!"
+        },
+        {
+            "authConversation": 13,
+            "sender": "nick",
+            "content": "Hi M!"
         }
     ],
     "conversations": [
@@ -26,5 +81,5 @@
             "id": 13
         }
     ],
-    "conversationCounter": 1
+    "conversationCounter": 19
 }

@@ -20,9 +20,10 @@ http.createServer((req, res) => {
 	}
 	var data = JSON.parse(fs.readFileSync("data.json", "utf-8"));
 	console.log(arr);
-	handle(arr, data);
+    var out = handle(arr, data);
+    console.log(out);
 	fs.writeFileSync("data.json", JSON.stringify(data, null, 4), "utf8");
-	res.write("Hello World!");
+	res.write(JSON.stringify(out));
 	res.end();
 }).listen(port);
 
@@ -63,8 +64,8 @@ function handle(keyValues, jsonData) {
 			outputObj.errorMessage = "Cannot request user";
 		}
 	} else if (obj.target == "conversation") {
-		if (verifyUser(user.username, user.password, jsonData)) {
-			var allConversations = jsonData.allConversations;
+		if (verifyUser(obj.username, obj.password, jsonData)) {
+			var allConversations = jsonData.conversations;
 
 			if (obj.action == "request") {
 				var outConversations = [];
@@ -84,20 +85,14 @@ function handle(keyValues, jsonData) {
 
 				outputObj.data = outConversations;
 			} else if (obj.action == "create") {
+                obj.data = JSON.parse(obj.data);
 				var alreadypresent = false;
 				for (var i = 0; i < allConversations.length; i++) {
-					var conversationObj = allConversations[i];
-					if (conversationObj.authUsers.length == obj.data.authUsers.length) {
-						var flag = true;
-						for (var j = 0; j < conversationObj.authUsers.length; j++) {
-							if (conversationObj.authUsers[j] != obj.username) {
-								flag = false;
-							}
-						}
-						if (flag) {
-							alreadypresent = true;
-						}
-					}
+                    var conversationObj = allConversations[i];
+                    if(conversationObj.title == obj.data.title)
+                    {
+                        alreadypresent = true;
+                    }
 				}
 				if (alreadypresent) {
 					outputObj.success = false;
@@ -143,7 +138,7 @@ function handle(keyValues, jsonData) {
 		// 	outputObj.errorMessage = "Invalid conversation id";
 		// }
 	} else if (obj.target == "message") {
-		if (verifyUser(user.username, user.password, jsonData)) {
+		if (verifyUser(obj.username, obj.password, jsonData)) {
 			var groupId = obj.id;
 			var flag = true;
 			for (var i = 0; i < jsonData.conversations.length; i++) {
@@ -153,12 +148,13 @@ function handle(keyValues, jsonData) {
 				) {
 					flag = false;
 					if (obj.action == "request") {
-						obj.data = [];
+                        console.log("REQUEST MESSAGE");
+						outputObj.data = [];
 						for (var j = 0; j < jsonData.messages.length; j++) {
-							if (jsonData.messages[j].authConversation == groupId) {
-								obj.data.push(jsonData.messages[j]);
+							if (""+jsonData.messages[j].authConversation == groupId+"") {
+								outputObj.data.push(jsonData.messages[j]);
 							}
-						}
+                        }
 					} else if (obj.action == "create") {
 						var tempMsg = JSON.parse(obj.data);
 						jsonData.messages.push(tempMsg);
@@ -180,7 +176,7 @@ function handle(keyValues, jsonData) {
 		outputObj.success = false;
 		outputObj.errorMessage = "Invalid input query";
 	}
-	console.log(outputObj);
+    return outputObj;
 }
 function auth(arr, user) {
 	for (var i = 0; i < arr.length; i++) {
