@@ -2,6 +2,8 @@ let http = require("http");
 let os = require("os");
 let port = 1234;
 let fs = require("fs");
+let path = require("path");
+var folder = path.join(".","serverData")
 
 var ifaces = os.networkInterfaces()["wlp58s0"];
 for (var i = 0; i < ifaces.length; i++) {
@@ -18,11 +20,11 @@ http.createServer((req, res) => {
 		obj.push(q[a]);
 		arr.push(obj);
 	}
-	var data = JSON.parse(fs.readFileSync("data.json", "utf-8"));
+	var data = JSON.parse(fs.readFileSync(path.join(folder,"data.json"), "utf-8"));
 	console.log(arr);
     var out = handle(arr, data);
     console.log(out);
-	fs.writeFileSync("data.json", JSON.stringify(data, null, 4), "utf8");
+	fs.writeFileSync(path.join(folder,"data.json"), JSON.stringify(data, null, 4), "utf8");
 	res.write(JSON.stringify(out));
 	res.end();
 }).listen(port);
