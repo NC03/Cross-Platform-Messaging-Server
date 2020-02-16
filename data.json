@@ -2,22 +2,29 @@
     "users": [
         {
             "username": "john",
-            "saltedPassword": "ladskfjalskdjfa"
+            "password": "ladskfjalskdjfa"
         },
         {
             "username": "nick",
-            "saltedPassword": "ladskfjalskdjfa"
+            "password": "ladskfjalskdjfa"
         }
     ],
     "messages": [
+        {
+            "authConversation": 13,
+            "sender": "nick",
+            "content": "Hi John!"
+        }
+    ],
+    "conversations": [
         {
             "authUsers": [
                 "john",
                 "nick"
             ],
-            "sender": "nick",
-            "content": "Hi John!"
+            "title": "conversationTitle",
+            "id": 13
         }
     ],
-    "conversations": []
+    "conversationCounter": 1
 }

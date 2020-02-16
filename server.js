@@ -34,9 +34,8 @@ function handle(keyValues, jsonData) {
 	for (var i = 0; i < keyValues.length; i++) {
 		obj[keyValues[i][0]] = keyValues[i][1];
 	}
-	if (obj.action == "request") {
-	} else if (obj.action == "create") {
-		if (obj.target == "user") {
+	if (obj.target == "user") {
+		if (obj.action == "create") {
 			if (obj.username != null && obj.password != null) {
 				//Sent password must not be empty string
 				var present = false;
@@ -52,19 +51,95 @@ function handle(keyValues, jsonData) {
 				} else {
 					jsonData.users.push({
 						username: obj.username,
-						saltedpassword: obj.password
+						password: obj.password
 					});
 				}
 			} else {
 				outputObj.success = false;
 				outputObj.errorMessage = "Invalid username/password";
 			}
-		} else if (obj.target == "conversation") {
-		} else if (obj.target == "message") {
+		} else {
+			outputObj.success = false;
+			outputObj.errorMessage = "Cannot request user";
 		}
+	} else if (obj.target == "conversation") {
+		if (verifyUser(user.username, user.password, jsonData)) {
+            var allConversations = jsonData.allConversations;
+            
+			if (obj.action == "request") {
+                var outConversations = [];
+
+                for(var i = 0; i < allConversations.length; i++)
+                {
+                    var conversationObj = allConversations[i];
+                    var presentUser = false;
+                    for(var j = 0; j < conversationObj.authUsers.length; j++)
+                    {
+                        if(conversationObj.authUsers[j] == obj.username)
+                        {
+                            presentUser = true;
+                        }
+                    }
+                    if(presentUser)
+                    {
+                        outConversations.push(conversationObj);
+                    }
+                }
+
+                outputObj.data = outConversations;
+			} else if (obj.action == "create") {
+                
+			} else {
+				outputObj.success = false;
+				outputObj.errorMessage = "Invalid action";
+			}
+		} else {
+			outputObj.success = false;
+			outputObj.errorMessage = "Invalid user credentials";
+		}
+
+		// var found = false;
+		// var conversationObj = [];
+		// for (var i = 0; i < jsonData.conversations.length; i++) {
+		// 	var conversation = jsonData.conversations[i];
+		// 	if (conversation.id == obj.id) {
+		// 		found = true;
+		// 		conversationObj = conversation;
+		// 	}
+		// }
+		// if (found && obj.action == "request") {
+		//     for(var i = 0; i < conversationObj.authUsers.length; i++)
+		//     {
+		//         var user = conversationObj.authUsers[i];
+		//         if(user == obj.username && verifyUser(user,obj.password))
+		//         {
+		//             outputObj.data = conversationObj;
+		//         }else{
+		//             outputObj.success = false;
+		//             outputObj.errorMessage = "Invalid user credentials";
+		//         }
+		//     }
+		// } else if(found && obj.action{
+
+		// 	outputObj.success = false;
+		// 	outputObj.errorMessage = "Invalid conversation id";
+		// }
+	} else if (obj.target == "message") {
 	} else {
 		outputObj.success = false;
 		outputObj.errorMessage = "Invalid input query";
-    }
-    console.log(outputObj);
+	}
+	console.log(outputObj);
+}
+function verifyUser(user, passwd, jsonObject) {
+	for (var i = 0; i < jsonObject.users.length; i++) {
+		if (jsonObject.users[i].username == user) {
+			if (jsonObject.users[i].password == passwd) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
+	return false;
 }
