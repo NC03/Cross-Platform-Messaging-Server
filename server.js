@@ -151,16 +151,21 @@ function handle(keyValues, jsonData) {
 					jsonData.conversations[i].id == groupId &&
 					auth(jsonData.conversations[i].authUsers, obj.username)
 				) {
-
-                    flag = false;
-                    obj.data = []
-                    for(var j = 0; j < jsonData.messages.length; j++)
-                    {
-                        if(jsonData.messages[j].authConversation == groupId)
-                        {
-                            obj.data.push(jsonData.messages[j]);
-                        }
-                    }
+					flag = false;
+					if (obj.action == "request") {
+						obj.data = [];
+						for (var j = 0; j < jsonData.messages.length; j++) {
+							if (jsonData.messages[j].authConversation == groupId) {
+								obj.data.push(jsonData.messages[j]);
+							}
+						}
+					} else if (obj.action == "create") {
+						var tempMsg = JSON.parse(obj.data);
+						jsonData.messages.push(tempMsg);
+					} else {
+						outputObj.success = false;
+						outputObj.errorMessage = "Invalid action";
+					}
 				}
 			}
 			if (flag) {
