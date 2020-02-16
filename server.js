@@ -3,7 +3,7 @@ let os = require("os");
 let port = 1234;
 let fs = require("fs");
 let path = require("path");
-var folder = path.join(".","serverData")
+var folder = path.join(".", "serverData");
 
 var ifaces = os.networkInterfaces()["wlp58s0"];
 for (var i = 0; i < ifaces.length; i++) {
@@ -20,11 +20,15 @@ http.createServer((req, res) => {
 		obj.push(q[a]);
 		arr.push(obj);
 	}
-	var data = JSON.parse(fs.readFileSync(path.join(folder,"data.json"), "utf-8"));
+	var data = JSON.parse(fs.readFileSync(path.join(folder, "data.json"), "utf-8"));
 	console.log(arr);
-    var out = handle(arr, data);
-    console.log(out);
-	fs.writeFileSync(path.join(folder,"data.json"), JSON.stringify(data, null, 4), "utf8");
+	var out = handle(arr, data);
+	console.log(out);
+	fs.writeFileSync(path.join(folder, "data.json"), JSON.stringify(data, null, 4), "utf8");
+	res.setHeader("Access-Control-Allow-Origin", "*");
+	res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
+	res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+	res.setHeader("Access-Control-Allow-Credentials", true);
 	res.write(JSON.stringify(out));
 	res.end();
 }).listen(port);
@@ -87,14 +91,13 @@ function handle(keyValues, jsonData) {
 
 				outputObj.data = outConversations;
 			} else if (obj.action == "create") {
-                obj.data = JSON.parse(obj.data);
+				obj.data = JSON.parse(obj.data);
 				var alreadypresent = false;
 				for (var i = 0; i < allConversations.length; i++) {
-                    var conversationObj = allConversations[i];
-                    if(conversationObj.title == obj.data.title)
-                    {
-                        alreadypresent = true;
-                    }
+					var conversationObj = allConversations[i];
+					if (conversationObj.title == obj.data.title) {
+						alreadypresent = true;
+					}
 				}
 				if (alreadypresent) {
 					outputObj.success = false;
@@ -150,13 +153,13 @@ function handle(keyValues, jsonData) {
 				) {
 					flag = false;
 					if (obj.action == "request") {
-                        console.log("REQUEST MESSAGE");
+						console.log("REQUEST MESSAGE");
 						outputObj.data = [];
 						for (var j = 0; j < jsonData.messages.length; j++) {
-							if (""+jsonData.messages[j].authConversation == groupId+"") {
+							if ("" + jsonData.messages[j].authConversation == groupId + "") {
 								outputObj.data.push(jsonData.messages[j]);
 							}
-                        }
+						}
 					} else if (obj.action == "create") {
 						var tempMsg = JSON.parse(obj.data);
 						jsonData.messages.push(tempMsg);
@@ -178,7 +181,7 @@ function handle(keyValues, jsonData) {
 		outputObj.success = false;
 		outputObj.errorMessage = "Invalid input query";
 	}
-    return outputObj;
+	return outputObj;
 }
 function auth(arr, user) {
 	for (var i = 0; i < arr.length; i++) {
