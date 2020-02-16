@@ -148,7 +148,7 @@ function handle(keyValues, jsonData) {
 			var flag = true;
 			for (var i = 0; i < jsonData.conversations.length; i++) {
 				if (
-					jsonData.conversations[i].id == groupId &&
+					""+jsonData.conversations[i].id == ""+groupId &&
 					auth(jsonData.conversations[i].authUsers, obj.username)
 				) {
 					flag = false;
