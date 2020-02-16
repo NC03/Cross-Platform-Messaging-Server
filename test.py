@@ -14,5 +14,3 @@ print()
 
 print("Request message: "+req.get("""http://localhost:1234/?action=request&target=message&username=nick&password=hmac&id=13""").text)
 print()
-
-
